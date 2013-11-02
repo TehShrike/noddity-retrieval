@@ -1,0 +1,29 @@
+{
+  "name": "noddity-retrieval",
+  "version": "0.0.1",
+  "main": "./index.js",
+  "author": {
+    "name": "TehShrike",
+    "email": "me@JoshDuff.com",
+    "url": "http://joshduff.com"
+  },
+  "description": "For remote retrieval of a simple blog index and content",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TehShrike/noddity-retrieval.git"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "tap ./test/*.js"
+  },
+  "devDependencies": {
+    "tap": "~0.4.4",
+    "send": "~0.1.4"
+  },
+  "dependencies": {
+    "concat-stream": "~1.1.0",
+    "text-metadata-parser": "~1.0.1"
+  }
+}
