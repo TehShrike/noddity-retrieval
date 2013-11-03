@@ -22,7 +22,16 @@ module.exports = function NoddityRetrieval(root) {
 					if (typeof chunk !== 'undefined') {
 						data += chunk
 					}
-					cb(false, parse(data))
+					var posts = null
+					try {
+						posts = parse(data)
+					} catch (e) {
+						cb(new Error("Error parsing file with contents:\n" + data + "\n==========\n" + e.message))
+					}
+
+					if (posts !== null) {
+						cb(false, posts)						
+					}
 				}
 			})
 		})
