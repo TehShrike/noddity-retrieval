@@ -42,7 +42,11 @@ module.exports = function NoddityRetrieval(root) {
 			lookup('index.json', cb, JSON.parse)
 		},
 		getPost: function(post, cb) {
-			lookup(post, cb, parser);
+			lookup(post, cb, function(textToParse) {
+				return parser(textToParse, {
+					date: 'date'
+				})
+			});
 		}
 	}
 }
