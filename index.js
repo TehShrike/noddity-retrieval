@@ -6,7 +6,8 @@ var parser = require('text-metadata-parser')
 module.exports = function NoddityRetrieval(root) {
 	var lookup = function(file, cb, parse) {
 		var data = ''
-		http.get(url.resolve(root, file), function(res) {
+		var fullPath = url.resolve(root, file)
+		http.get(fullPath, function(res) {
 			res.setEncoding('utf8')
 			res.on('data', function(chunk) {
 				if (data !== null) {
@@ -22,18 +23,25 @@ module.exports = function NoddityRetrieval(root) {
 					if (typeof chunk !== 'undefined') {
 						data += chunk
 					}
-					var posts = null
-					try {
-						posts = parse(data)
-					} catch (e) {
-						cb(new Error("Error parsing file with contents:\n" + data + "\n==========\n" + e.message))
-					}
 
-					if (posts !== null) {
-						cb(false, posts)						
+					if (res.statusCode !== 200) {
+						cb(new Error("Lookup of " + fullPath + " returned status " + res.statusCode + "\n========\n" + data))
+					} else {
+						var information = null
+						try {
+							information = parse(data)
+						} catch (e) {
+							cb(new Error("Error parsing file with contents:\n" + data + "\n==========\n" + e.message))
+						}
+
+						if (information !== null) {
+							cb(false, information)
+						}
 					}
 				}
 			})
+		}).on('error', function(err) {
+			cb(new Error("Lookup of " + fullPath + " failed\n========\n" + err.message))
 		})
 	}
 
