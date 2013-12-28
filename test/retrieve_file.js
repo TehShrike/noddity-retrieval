@@ -10,6 +10,7 @@ test('retrieve a post by filename', function(t) {
 	retrieve.getPost('post1.md', function(err, post) {
 		t.notOk(err, "no error retrieving post1.md")
 		t.equal(post.metadata.title, 'This is the first post', 'first title is correct')
+		t.equal(post.filename, 'post1.md', 'first filename is correct')
 		server.close()
 		t.end()
 	})

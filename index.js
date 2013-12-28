@@ -49,11 +49,13 @@ module.exports = function NoddityRetrieval(root) {
 		getIndex: function(cb) {
 			lookup('index.json', cb, JSON.parse)
 		},
-		getPost: function(post, cb) {
-			lookup(post, cb, function(textToParse) {
-				return parser(textToParse, {
+		getPost: function(filename, cb) {
+			lookup(filename, cb, function(textToParse) {
+				var post = parser(textToParse, {
 					date: 'date'
 				})
+				post.filename = filename
+				return post
 			});
 		}
 	}
