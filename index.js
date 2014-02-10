@@ -7,8 +7,8 @@ module.exports = function NoddityRetrieval(root) {
 	var lookup = function(file, cb, parse) {
 		var data = ''
 		var fullPath = url.resolve(root, file)
-		http.get(fullPath, function(res) {
-			res.setEncoding('utf8')
+		http.get(url.parse(fullPath), function(res) {
+			res.setEncoding && res.setEncoding('utf8')
 			res.on('data', function(chunk) {
 				if (data !== null) {
 					data += chunk
