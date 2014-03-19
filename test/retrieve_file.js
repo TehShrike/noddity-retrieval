@@ -36,3 +36,15 @@ test('retrieve from a non-existant server', function(t) {
 		t.end()
 	})
 })
+
+test('Make sure the returned metadata is of the correct type', function(t) {
+	var server = fakeoServer(8989)
+	var retrieve = new Retrieve('http://127.0.0.1:8989')
+
+	retrieve.getPost('post1.md', function(err, post) {
+		t.ok(post.metadata.date instanceof Date || !iNaN(post.metadata.date), "The date parameter is a date")
+		t.equal(post.metadata.markdown, true, 'The "markdown" property is a boolean, and true')
+		server.close()
+		t.end()
+	})
+})

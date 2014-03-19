@@ -52,7 +52,8 @@ module.exports = function NoddityRetrieval(root) {
 		getPost: function(filename, cb) {
 			lookup(filename, cb, function(textToParse) {
 				var post = parser(textToParse, {
-					date: 'date'
+					date: 'date',
+					boolean: 'markdown'
 				})
 				post.filename = filename
 				return post
