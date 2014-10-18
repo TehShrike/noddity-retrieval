@@ -1,6 +1,6 @@
 {
   "name": "noddity-retrieval",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "main": "./index.js",
   "author": {
     "name": "TehShrike",
@@ -23,7 +23,6 @@
     "send": "~0.1.4"
   },
   "dependencies": {
-    "concat-stream": "~1.1.0",
     "text-metadata-parser": "^2.0.0"
   }
 }

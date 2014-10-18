@@ -1,6 +1,5 @@
 var http = require('http')
 var url = require('url')
-var concat = require('concat-stream')
 var parser = require('text-metadata-parser')
 
 module.exports = function NoddityRetrieval(root) {
@@ -8,7 +7,12 @@ module.exports = function NoddityRetrieval(root) {
 		var data = ''
 		var fullPath = url.resolve(root, file)
 		http.get(url.parse(fullPath), function(res) {
-			res.setEncoding && res.setEncoding('utf8')
+
+			var defectiveBrowserifyHttpModule = typeof res.setEncoding !== 'function'
+			if (!defectiveBrowserifyHttpModule) {
+				res.setEncoding('utf8')
+			}
+
 			res.on('data', function(chunk) {
 				if (data !== null) {
 					data += chunk

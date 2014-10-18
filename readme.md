@@ -1,5 +1,15 @@
+[![Build Status](https://travis-ci.org/TehShrike/noddity-retrieval.svg)](https://travis-ci.org/TehShrike/noddity-retrieval)
+
 Noddity Retrieval
 =====
+
+This module provides an API to a [Noddity](http://noddity.com) data store full of posts and a list of said posts.
+
+You give it an http root, and that's all it needs to provide
+
+- an async getter function to download parsed post objects
+- an async getter function to download an array of post objects based on the index.json file from the root directory
+
 
 So I have this idea, right?  Where your blog posts could just be a directory with an index file and a bunch of markdown files, just being served out onto the internet.
 
@@ -28,6 +38,6 @@ Useage
 
 This is the core module of the [Noddity](http://noddity.com/) cms.
 
-License 
+License
 -----
 [WTFPL](http://wtfpl2.com/)
