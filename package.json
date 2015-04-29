@@ -19,8 +19,8 @@
     "test": "tap ./test/*.js"
   },
   "devDependencies": {
-    "tap": "~0.4.4",
-    "send": "~0.1.4"
+    "tap": "^0.7.1",
+    "send": "^0.12.2"
   },
   "dependencies": {
     "request": "^2.55.0",
