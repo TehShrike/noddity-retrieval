@@ -18,21 +18,21 @@ The idea is that your root directory of posts contains:
 - An index.json file, containing a JSON array of strings representing the file names that are your "official" blog posts, in order.
 - Whatever markdown files you want to be accessible, with metadata stored in a format amenable to [text-metadata-parser](https://github.com/TehShrike/text-metadata-parser).
 
-Useage
+Usage
 -----
 
 ```js
-	var retrieve = new Retrieve('http://remote-server.com/blogfiles/')
+var retrieve = new Retrieve('http://remote-server.com/blogfiles/')
 
-	retrieve.getIndex(function(err, index) {
-		if (!err && index.length > 0) {
-			// Get the most recent post
-			retrieve.getPost(index.pop(), function(err, post) {
-				console.log("Found post named " + post.metadata.title)
-				console.log("The words inside it are:\n" + post.content)
-			})
-		}
-	})
+retrieve.getIndex(function(err, index) {
+	if (!err && index.length > 0) {
+		// Get the most recent post
+		retrieve.getPost(index.pop(), function(err, post) {
+			console.log("Found post named " + post.metadata.title)
+			console.log("The words inside it are:\n" + post.content)
+		})
+	}
+})
 
 ```
 
