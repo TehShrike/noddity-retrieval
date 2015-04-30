@@ -5,7 +5,7 @@ Noddity Retrieval
 
 This module provides an API to a [Noddity](http://noddity.com) data store full of posts and a list of said posts.
 
-You give it an http root, and that's all it needs to provide
+You give it an http(s) root, and that's all it needs to provide
 
 - an async getter function to download parsed post objects
 - an async getter function to download an array of post objects based on the index.json file from the root directory

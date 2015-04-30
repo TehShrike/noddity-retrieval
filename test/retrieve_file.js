@@ -1,50 +1,57 @@
 var test = require('tap').test
-var fakeoServer = require('./fakeo_remote_server/index.js')
 var Retrieve = require('../')
 
-test('retrieve a post by filename', function(t) {
-	var server = fakeoServer(8989)
+tests(require('./fakeo_remote_server/http.js'), 'http')
+tests(require('./fakeo_remote_server/https.js'), 'https')
 
-	var retrieve = new Retrieve('http://127.0.0.1:8989')
+function tests(fakeoServer, protocol) {
+	test('retrieve a post by filename using ' + protocol, function(t) {
+		var server = fakeoServer(8989)
 
-	retrieve.getPost('post1.md', function(err, post) {
-		t.notOk(err, "no error retrieving post1.md")
-		t.equal(post.metadata.title, 'This is the first post', 'first title is correct')
-		t.equal(post.filename, 'post1.md', 'first filename is correct')
-		server.close()
-		t.end()
+		var retrieve = new Retrieve(protocol + '://127.0.0.1:8989')
+
+		retrieve.getPost('post1.md', function(err, post) {
+			t.notOk(err, "no error retrieving post1.md")
+			if (!err) {
+				t.equal(post.metadata.title, 'This is the first post', 'first title is correct')
+				t.equal(post.filename, 'post1.md', 'first filename is correct')
+			}
+			server.close()
+			t.end()
+		})
 	})
-})
 
-test('retrieve a non-existant post', function(t) {
-	var server = fakeoServer(8989)
+	test('retrieve a non-existant post using ' + protocol, function(t) {
+		var server = fakeoServer(8989)
 
-	var retrieve = new Retrieve('http://127.0.0.1:8989')
+		var retrieve = new Retrieve(protocol + '://127.0.0.1:8989')
 
-	retrieve.getPost('nothing.lol', function(err, post) {
-		t.ok(err, "error retrieving nothing.lol")
-		server.close()
-		t.end()
+		retrieve.getPost('nothing.lol', function(err, post) {
+			t.ok(err, "error retrieving nothing.lol")
+			server.close()
+			t.end()
+		})
 	})
-})
 
-test('retrieve from a non-existant server', function(t) {
-	var retrieve = new Retrieve('http://127.0.0.1:8989')
+	test('retrieve from a non-existant server using ' + protocol, function(t) {
+		var retrieve = new Retrieve(protocol + '://127.0.0.1:8989')
 
-	retrieve.getPost('nothing.lol', function(err, post) {
-		t.ok(err, "error retrieving nothing.lol")
-		t.end()
+		retrieve.getPost('nothing.lol', function(err, post) {
+			t.ok(err, "error retrieving nothing.lol")
+			t.end()
+		})
 	})
-})
 
-test('Make sure the returned metadata is of the correct type', function(t) {
-	var server = fakeoServer(8989)
-	var retrieve = new Retrieve('http://127.0.0.1:8989')
+	test('Make sure the returned metadata is of the correct type using ' + protocol, function(t) {
+		var server = fakeoServer(8989)
+		var retrieve = new Retrieve(protocol + '://127.0.0.1:8989')
 
-	retrieve.getPost('post1.md', function(err, post) {
-		t.ok(post.metadata.date instanceof Date || !iNaN(post.metadata.date), "The date parameter is a date")
-		t.equal(post.metadata.markdown, true, 'The "markdown" property is a boolean, and true')
-		server.close()
-		t.end()
+		retrieve.getPost('post1.md', function(err, post) {
+			t.notOk(err, "no error retrieving post1.md")
+			t.ok(post.metadata.date instanceof Date || !isNaN(post.metadata.date), "The date parameter is a date")
+			t.equal(post.metadata.markdown, true, 'The "markdown" property is a boolean, and true')
+			server.close()
+			t.end()
+		})
 	})
-})
+}
