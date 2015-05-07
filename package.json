@@ -24,6 +24,6 @@
   },
   "dependencies": {
     "request": "^2.55.0",
-    "text-metadata-parser": "^2.0.0"
+    "text-metadata-parser": "^3.0.0"
   }
 }
