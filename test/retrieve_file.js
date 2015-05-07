@@ -1,4 +1,4 @@
-var test = require('tap').test
+var test = require('tape')
 var Retrieve = require('../')
 
 tests(require('./fakeo_remote_server/http.js'), 'http')

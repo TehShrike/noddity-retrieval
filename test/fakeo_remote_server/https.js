@@ -11,7 +11,7 @@ module.exports = function(port) {
 	}
 
 	var server = require('https').createServer(sslOptions, function(req, res) {
-		send(req, url.parse(req.url).pathname, { root: __dirname })
+		send(req, url.parse(req.url).pathname, { root: __dirname + '/content' })
 			.pipe(res)
 	})
 
