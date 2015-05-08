@@ -23,7 +23,11 @@
     "send": "^0.12.2"
   },
   "dependencies": {
+    "browser-request": "^0.3.3",
     "request": "^2.55.0",
     "text-metadata-parser": "^3.0.0"
+  },
+  "browser": {
+    "request": "browser-request"
   }
 }
