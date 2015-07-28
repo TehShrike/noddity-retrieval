@@ -1,16 +1,9 @@
 var url = require('url')
 var send = require('send')
-var fs = require('fs')
+var selfSignedHttps = require('self-signed-https')
 
 module.exports = function(port) {
-	var sslOptions = {
-		key: fs.readFileSync(__dirname + '/cert/key.pem'),
-		cert: fs.readFileSync(__dirname + '/cert/cert.pem'),
-		requestCert: false,
-		rejectUnauthorized: false
-	}
-
-	var server = require('https').createServer(sslOptions, function(req, res) {
+	var server = selfSignedHttps(function(req, res) {
 		send(req, url.parse(req.url).pathname, { root: __dirname + '/content' })
 			.pipe(res)
 	})
@@ -19,6 +12,3 @@ module.exports = function(port) {
 
 	return server
 }
-
-// https://nodejs.org/api/https.html
-// https://nodejs.org/api/crypto.html
