@@ -19,6 +19,7 @@
     "test": "tape ./test/*.js"
   },
   "devDependencies": {
+    "self-signed-https": "^1.0.5",
     "send": "^0.12.2",
     "tape": "^4.0.0"
   },
