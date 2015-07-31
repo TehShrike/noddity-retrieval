@@ -1,21 +1,18 @@
-var request = require('request')
+var get = require('simple-get')
 var url = require('url')
 var parser = require('text-metadata-parser')
 
 module.exports = function NoddityRetrieval(root) {
 	var lookup = function(file, cb, parse) {
-		var fullPath = url.resolve(root, file)
-		var options = {
-			url: fullPath,
-			agentOptions: { rejectUnauthorized: false } // Allow self-signed certs
-		}
-		request(options, function (err, res, body) {
+		var fullUrl = url.resolve(root, file)
+		get.concat(fullUrl, function (err, body, res) {
 			if (err) {
-				cb(new Error("Lookup of " + fullPath + " failed\n========\n" + err.message))
+				cb(new Error("Lookup of " + fullUrl + " failed\n========\n" + err.message))
 			} else if (res.statusCode !== 200) {
-				cb(new Error("Lookup of " + fullPath + " returned status " + res.statusCode + "\n==========\n" + body))
+				cb(new Error("Lookup of " + fullUrl + " returned status " + res.statusCode + "\n==========\n" + body))
 			} else {
 				var information = null
+				body = String(body)
 				try {
 					information = parse(body)
 				} catch (e) {
