@@ -1,8 +1,12 @@
 var test = require('tape')
 var Retrieve = require('../')
 
-tests(require('./fakeo_remote_server/http.js'), 'http')
-tests(require('./fakeo_remote_server/https.js'), 'https')
+if (process.browser) {
+	tests(require('./fakeo_remote_server/browser-shim.js'), 'http')
+} else {
+	tests(require('./fakeo_remote_server/http.js'), 'http')
+	tests(require('./fakeo_remote_server/https.js'), 'https')
+}
 
 function tests(fakeoServer, protocol) {
 	test('retrieve a post by filename using ' + protocol, function(t) {
