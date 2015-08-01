@@ -9,14 +9,13 @@ module.exports = function NoddityRetrieval(root) {
 			if (err) {
 				cb(new Error("Lookup of " + fullUrl + " failed\n========\n" + err.message))
 			} else if (res.statusCode !== 200) {
-				cb(new Error("Lookup of " + fullUrl + " returned status " + res.statusCode + "\n==========\n" + body))
+				cb(new Error("Lookup of " + fullUrl + " returned status " + res.statusCode + "\n==========\n" + body.toString()))
 			} else {
 				var information = null
-				body = String(body)
 				try {
-					information = parse(body)
+					information = parse(body.toString())
 				} catch (e) {
-					cb(new Error("Error parsing file with contents:\n" + body + "\n==========\n" + e.message))
+					cb(new Error("Error parsing file with contents:\n" + body.toString() + "\n==========\n" + e.message))
 				}
 
 				if (information !== null) {
