@@ -3,6 +3,7 @@ var Retrieve = require('../')
 
 tests(require('./fakeo_remote_server/http.js'), 'http')
 tests(require('./fakeo_remote_server/https.js'), 'https')
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
 function tests(fakeoServer, protocol) {
 	test('retrieve the index and the posts it references using ' + protocol, function(t) {
