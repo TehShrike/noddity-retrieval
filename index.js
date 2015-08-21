@@ -1,43 +1,39 @@
-var get = require('simple-get')
+var request = require('superagent')
 var url = require('url')
 var parser = require('text-metadata-parser')
 
 module.exports = function NoddityRetrieval(root) {
-	var lookup = function(file, cb, parse) {
+	function lookup(file, property, cb) {
 		var fullUrl = url.resolve(root, file)
-		get.concat(fullUrl, function (err, body, res) {
+		request.get(fullUrl).end(function (err, res) {
 			if (err) {
 				cb(new Error("Lookup of " + fullUrl + " failed\n========\n" + err.message))
-			} else if (res.statusCode !== 200) {
-				cb(new Error("Lookup of " + fullUrl + " returned status " + res.statusCode + "\n==========\n" + body.toString()))
+			} else if (res.status !== 200) {
+				cb(new Error("Lookup of " + fullUrl + " returned status " + res.status + "\n==========\n" + res.text))
 			} else {
-				var information = null
-				try {
-					information = parse(body.toString())
-				} catch (e) {
-					cb(new Error("Error parsing file with contents:\n" + body.toString() + "\n==========\n" + e.message))
-				}
-
-				if (information !== null) {
-					cb(null, information)
-				}
+				cb(null, res[property])
 			}
 		})
 	}
 
 	return {
 		getIndex: function(cb) {
-			lookup('index.json', cb, JSON.parse)
+			lookup('index.json', 'body', cb)
 		},
 		getPost: function(filename, cb) {
-			lookup(filename, cb, function(textToParse) {
-				var post = parser(textToParse, {
-					date: 'date',
-					boolean: 'markdown'
-				})
-				post.filename = filename
-				return post
-			});
+			lookup(filename, 'text', function (err, textToParse) {
+				if (err) {
+					cb(err)
+				} else {
+					console.log(typeof textToParse)
+					var post = parser(textToParse, {
+						date: 'date',
+						boolean: 'markdown'
+					})
+					post.filename = filename
+					cb(null, post)
+				}
+			})
 		}
 	}
 }
