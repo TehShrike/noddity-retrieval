@@ -15,7 +15,7 @@ function tests(fakeoServer, protocol) {
 		t.plan(5)
 
 		retrieve.getIndex(function(err, index) {
-			t.equal(index.length, 2)
+			t.equal(index.length, 2, 'index.json has 2 entries')
 
 			retrieve.getPost(index[0], function(err, post) {
 				t.equal(post.metadata.title, 'This is the first post', 'first title is correct')
@@ -30,6 +30,22 @@ function tests(fakeoServer, protocol) {
 				})
 			})
 
+		})
+	})
+
+	test('invalid index', function(t) {
+		var server = fakeoServer(8989, '/content-with-directories/folder1')
+
+		var retrieve = new Retrieve(protocol + '://127.0.0.1:8989')
+
+		t.plan(2)
+
+		retrieve.getIndex(function(err, index) {
+			t.ok(err, 'Error when getting non-existant index')
+			t.equal(index, undefined, 'index defaults to undefined')
+
+			server.close()
+			t.end()
 		})
 	})
 }
