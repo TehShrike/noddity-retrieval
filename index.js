@@ -4,16 +4,22 @@ var parser = require('text-metadata-parser')
 
 module.exports = function NoddityRetrieval(root) {
 	function lookup(file, property, cb) {
-		var fullUrl = url.resolve(root, file)
-		request.get(fullUrl).end(function (err, res) {
-			if (err) {
-				cb(new Error("Lookup of " + fullUrl + " failed\n========\n" + err.message))
-			} else if (res.status !== 200) {
-				cb(new Error("Lookup of " + fullUrl + " returned status " + res.status + "\n==========\n" + res.text))
-			} else {
-				cb(null, res[property])
-			}
-		})
+		if (typeof file !== 'string') {
+			process.nextTick(function () {
+				cb(new TypeError('Parameter \'file\' must be a string, not ' + typeof file))
+			})
+		} else {
+			var fullUrl = url.resolve(root, file)
+			request.get(fullUrl).end(function (err, res) {
+				if (err) {
+					cb(new Error("Lookup of " + fullUrl + " failed\n========\n" + err.message))
+				} else if (res.status !== 200) {
+					cb(new Error("Lookup of " + fullUrl + " returned status " + res.status + "\n==========\n" + res.text))
+				} else {
+					cb(null, res[property])
+				}
+			})
+		}
 	}
 
 	return {
