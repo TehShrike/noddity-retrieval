@@ -25,7 +25,6 @@ module.exports = function NoddityRetrieval(root) {
 				if (err) {
 					cb(err)
 				} else {
-					console.log(typeof textToParse)
 					var post = parser(textToParse, {
 						date: 'date',
 						boolean: 'markdown'
