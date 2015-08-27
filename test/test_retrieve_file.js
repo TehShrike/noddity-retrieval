@@ -60,4 +60,16 @@ function tests(fakeoServer, protocol) {
 			t.end()
 		})
 	})
+
+	test('provide retrieve.getPost with a non-string post name ', function(t) {
+		var server = fakeoServer(8989)
+
+		var retrieve = new Retrieve(protocol + '://127.0.0.1:8989')
+
+		retrieve.getPost(null, function(err, post) {
+			t.ok(err, "error with non-string post name")
+			server.close()
+			t.end()
+		})
+	})
 }
