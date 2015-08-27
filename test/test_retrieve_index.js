@@ -33,8 +33,24 @@ function tests(fakeoServer, protocol) {
 		})
 	})
 
-	test('invalid index', function(t) {
+	test('missing an index.json file', function(t) {
 		var server = fakeoServer(8989, '/content-with-directories/folder1')
+
+		var retrieve = new Retrieve(protocol + '://127.0.0.1:8989')
+
+		t.plan(2)
+
+		retrieve.getIndex(function(err, index) {
+			t.ok(err, 'Error when getting non-existant index')
+			t.equal(index, undefined, 'index defaults to undefined')
+
+			server.close()
+			t.end()
+		})
+	})
+
+	test('an invalid index.json file', function(t) {
+		var server = fakeoServer(8989, '/bad-index-json')
 
 		var retrieve = new Retrieve(protocol + '://127.0.0.1:8989')
 
