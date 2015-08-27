@@ -3,7 +3,7 @@ var url = require('url')
 var parser = require('text-metadata-parser')
 
 module.exports = function NoddityRetrieval(root) {
-	function lookup(file, property, cb) {
+	function lookup(file, transform, cb) {
 		if (typeof file !== 'string') {
 			process.nextTick(function () {
 				cb(new TypeError('Parameter \'file\' must be a string, not ' + typeof file))
@@ -16,7 +16,13 @@ module.exports = function NoddityRetrieval(root) {
 				} else if (res.status !== 200) {
 					cb(new Error("Lookup of " + fullUrl + " returned status " + res.status + "\n==========\n" + res.text))
 				} else {
-					cb(null, res[property])
+					var result
+					try {
+						result = [ null, transform(res.text) ]
+					} catch (e) {
+						result = [ e ]
+					}
+					cb.apply(null, result)
 				}
 			})
 		}
@@ -24,21 +30,17 @@ module.exports = function NoddityRetrieval(root) {
 
 	return {
 		getIndex: function(cb) {
-			lookup('index.json', 'body', cb)
+			lookup('index.json', JSON.parse, cb)
 		},
 		getPost: function(filename, cb) {
-			lookup(filename, 'text', function (err, textToParse) {
-				if (err) {
-					cb(err)
-				} else {
-					var post = parser(textToParse, {
-						date: 'date',
-						boolean: 'markdown'
-					})
-					post.filename = filename
-					cb(null, post)
-				}
-			})
+			lookup(filename, function (textToParse) {
+				var post = parser(textToParse, {
+					date: 'date',
+					boolean: 'markdown'
+				})
+				post.filename = filename
+				return post
+			}, cb)
 		}
 	}
 }
