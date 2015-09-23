@@ -57,7 +57,7 @@ function tests(fakeoServer, protocol) {
 		t.plan(2)
 
 		retrieve.getIndex(function(err, index) {
-			t.ok(err, 'Error when getting non-existant index')
+			t.ok(err, 'Error when getting invalid index.json')
 			t.equal(index, undefined, 'index defaults to undefined')
 
 			server.close()
