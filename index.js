@@ -10,14 +10,8 @@ module.exports = function NoddityRetrieval(root) {
 				cb(new TypeError('Parameter \'file\' must be a string, not ' + typeof file))
 			})
 		} else {
-			var parsedUrl = url.parse(url.resolve(root, file))
-			var escapedPathname = parsedUrl.pathname.split('/').map(function (url) {
-				// First decode, in case you have %20 or similar already in the URL
-				// Then encode, in case you have unicode characters
-				return urlEncode(urlEncode.decode(url))
-			}).join('/')
-			parsedUrl.pathname = escapedPathname
-			var fullUrl = url.format(parsedUrl)
+			var encodedFile = file.split('/').map(function (part) { return urlEncode(part) }).join('/')
+			var fullUrl = url.resolve(root, encodedFile)
 
 			request.get(fullUrl).end(function (err, res) {
 				if (err) {
