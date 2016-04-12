@@ -28,4 +28,3 @@ test('retrieve a post by filename', function(t) {
 		t.end()
 	})
 })
-

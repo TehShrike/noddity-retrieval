@@ -5,7 +5,6 @@ if (process.browser) {
 	tests(require('./fakeo_remote_server/browser-shim.js'), 'http')
 } else {
 	tests(require('./fakeo_remote_server/http.js'), 'http')
-	tests(require('./fakeo_remote_server/dumb-http.js'), 'http')
 	tests(require('./fakeo_remote_server/https.js'), 'https')
 	process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 }
@@ -61,7 +60,7 @@ function tests(fakeoServer, protocol) {
 		})
 	})
 
-	test('provide retrieve.getPost with a non-string post name ', function(t) {
+	test('provide retrieve.getPost with a non-string post name using ' + protocol, function(t) {
 		var server = fakeoServer(8989)
 
 		var retrieve = new Retrieve(protocol + '://127.0.0.1:8989')
@@ -72,4 +71,18 @@ function tests(fakeoServer, protocol) {
 			t.end()
 		})
 	})
+
+	test('retrieve a post with spaces in directory and file using ' + protocol, function(t) {
+		var server = fakeoServer(8989)
+
+		var retrieve = new Retrieve(protocol + '://127.0.0.1:8989')
+
+		retrieve.getPost('directory with space/file with space.md', function(err, post) {
+			t.error(err)
+			t.equal(post.content.trim(), 'Dangerous!')
+			server.close()
+			t.end()
+		})
+	})
+
 }
