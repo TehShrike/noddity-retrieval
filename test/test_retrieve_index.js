@@ -2,7 +2,6 @@ var test = require('tape')
 var Retrieve = require('../')
 
 tests(require('./fakeo_remote_server/http.js'), 'http')
-tests(require('./fakeo_remote_server/dumb-http.js'), 'http')
 tests(require('./fakeo_remote_server/https.js'), 'https')
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
