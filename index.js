@@ -1,7 +1,6 @@
 var request = require('superagent')
 var url = require('url')
 var parser = require('text-metadata-parser')
-var urlEncode = require('urlencode')
 
 module.exports = function NoddityRetrieval(root) {
 	function lookup(file, transform, cb) {
@@ -10,7 +9,7 @@ module.exports = function NoddityRetrieval(root) {
 				cb(new TypeError('Parameter \'file\' must be a string, not ' + typeof file))
 			})
 		} else {
-			var encodedFile = file.split('/').map(function (part) { return urlEncode(part) }).join('/')
+			var encodedFile = file.split('/').map(function (part) { return encodeURIComponent(part) }).join('/')
 			var fullUrl = url.resolve(root, encodedFile)
 
 			request.get(fullUrl).end(function (err, res) {
