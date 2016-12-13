@@ -5,18 +5,19 @@ var fs = require('fs')
 var tape = require('tape')
 
 var server = http.createServer(function(req, res) {
-	send(req, url.parse(req.url).pathname, { root: __dirname + '/test/content/' })
+	send(req, url.parse(req.url).pathname, { root: __dirname + '/content/' })
 		.pipe(res)
 })
 server.listen(8989)
 
-fs.readdirSync('./test')
+var testFiles = fs.readdirSync(__dirname)
 	.filter(function(path) {
-		return /^test_/.test(path)
+		return /^test_(common|node).+\.js$/.test(path)
 	}).forEach(function(path) {
-		console.log('running', path)
-		require('./test/' + path)
+		return './' + path
 	})
+
+testFiles.forEach(require)
 
 var tapeResults = tape.getHarness()._results
 
