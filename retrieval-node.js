@@ -1,14 +1,6 @@
-global.fetch = require('node-fetch')
-global.fetch.Promise = require('es6-promise')
-var popsicle = require('popsicle')
-var popsicleCache = require('popsicle-cache')
-var catbox = require('catbox-memory')
+var httpBasic = require('http-basic')
+var concat = require('simple-concat')
 var makeRetrieval = require('./index.js')
-
-var cache = popsicleCache.plugin({
-	engine: catbox,
-	ttl: popsicleCache.ttls.forever()
-})
 
 module.exports = function (urlRoot) {
 	if (typeof urlRoot !== 'string') {
@@ -17,15 +9,23 @@ module.exports = function (urlRoot) {
 
 	return makeRetrieval({
 		urlRoot: urlRoot,
-		httpGet: function (fullUrl, cb) {
-			popsicle.get(fullUrl)
-				.use(cache.handle)
-				.then(function (res) {
-					res.text = res.body
-					cb(null, res)
-				}, function (err) {
-					cb(err)
-				})
-		}
+		httpGet: httpGet
+	})
+}
+
+var httpBasicOptions = {
+	cache: 'memory'
+}
+
+function httpGet(fullUrl, cb) {
+	httpBasic('GET', fullUrl, httpBasicOptions, function (err, res) {
+		if (err) return cb(err)
+		concat(res.body, function (err, buf) {
+			if (err) return cb(err)
+			res.text = buf.toString()
+			res.status = res.statusCode
+			if (res.status === 304) res.status = 200
+			cb(null, res)
+		})
 	})
 }

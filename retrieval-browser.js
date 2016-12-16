@@ -8,8 +8,15 @@ module.exports = function(urlRoot) {
 
 	return makeRetrieval({
 		urlRoot: urlRoot,
-		httpGet: function (fullUrl, cb) {
-			request.get(fullUrl).end(cb)
-		}
+		httpGet: httpGet
 	})
+}
+
+function httpGet(fullUrl, cb) {
+	request.get({
+		url: fullUrl,
+		headers: {
+			'Access-Control-Allow-Origin': '*'
+		}
+	}).end(cb)
 }

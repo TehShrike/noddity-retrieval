@@ -10,14 +10,10 @@ var server = http.createServer(function(req, res) {
 })
 server.listen(8989)
 
-var testFiles = fs.readdirSync(__dirname)
-	.filter(function(path) {
-		return /^test_(common|node).+\.js$/.test(path)
-	}).forEach(function(path) {
-		return './' + path
-	})
-
-testFiles.forEach(require)
+fs.readdirSync(__dirname)
+	.filter(function(path) { return /^test_(common|node).+\.js$/.test(path) })
+	.map(function(path) { return './' + path })
+	.forEach(require)
 
 var tapeResults = tape.getHarness()._results
 
