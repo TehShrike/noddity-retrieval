@@ -13,10 +13,5 @@ module.exports = function(urlRoot) {
 }
 
 function httpGet(fullUrl, cb) {
-	request.get({
-		url: fullUrl,
-		headers: {
-			'Access-Control-Allow-Origin': '*'
-		}
-	}).end(cb)
+	request.get(fullUrl).end(cb)
 }

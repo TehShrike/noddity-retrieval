@@ -18,7 +18,7 @@
   },
   "scripts": {
     "test": "npm run test:node && npm run test:browser",
-    "test:browser": "browserify ./test/test_common_*.js | tape-run --static=test/content",
+    "test:browser": "node test/browser_test.js",
     "test:node": "node test/node_test.js"
   },
   "devDependencies": {
