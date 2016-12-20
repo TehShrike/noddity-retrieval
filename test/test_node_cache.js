@@ -9,20 +9,14 @@ test('Caches based on etag header', function(t) {
 
 	var server = http.createServer(function (req, res) {
 		if (first) {
-			res.writeHead(200, {
-				'ETag': etag
-			})
+			res.writeHead(200, { 'ETag': etag })
 			res.write('date: 2016-12-15\ntitle: cool beans\n\nThis is the content\n')
-			res.end()
-			first = false
 		} else {
 			t.equal(req.headers['if-none-match'], etag, 'Expected etag')
-			res.writeHead(304, {
-				'ETag': etag
-			})
-			res.write('date: 2000-01-01\ntitle: hot potatoes\n\nThis is different, but will not get detected because cache\n')
-			res.end()
+			res.writeHead(304)
 		}
+		first = false
+		res.end()
 	})
 
 	server.listen(5939)
@@ -44,29 +38,20 @@ test('Caches based on etag header', function(t) {
 	})
 })
 
-/*
 test('Caches based on Last-Modified header', function(t) {
 	var lastModified = new Date().toISOString()
 	var first = true
 
 	var server = http.createServer(function (req, res) {
 		if (first) {
-			res.writeHead(200, {
-				'Last-Modified': lastModified
-			})
+			res.writeHead(200, { 'Last-Modified': lastModified })
 			res.write('date: 2016-12-15\ntitle: cool beans\n\nThis is the content\n')
-			res.end()
-			first = false
-			console.log('first', req.headers)
 		} else {
-			console.log('not first', req.headers)
-			// t.equal(req.headers['If-Modified-Since'], lastModified, 'Expected date')
-			res.writeHead(304, {
-				'Last-Modified': lastModified
-			})
-			res.write('date: 2000-01-01\ntitle: hot potatoes\n\nThis is different, but will not get detected because cache\n')
-			res.end()
+			t.equal(req.headers['if-modified-since'], lastModified, 'Expected date')
+			res.writeHead(304)
 		}
+		first = false
+		res.end()
 	})
 
 	server.listen(5940)
@@ -80,7 +65,6 @@ test('Caches based on Last-Modified header', function(t) {
 
 		retrieve.getPost('post1.md', function(err, post) {
 			t.ifErr(err)
-			console.log(post)
 			t.equal(post.metadata.title, 'cool beans', 'retrieved a cached post')
 
 			t.end()
@@ -88,4 +72,3 @@ test('Caches based on Last-Modified header', function(t) {
 		})
 	})
 })
-*/
