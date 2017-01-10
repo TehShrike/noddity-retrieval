@@ -1,7 +1,8 @@
 {
   "name": "noddity-retrieval",
   "version": "1.5.3",
-  "main": "./index.js",
+  "main": "./retrieval-node.js",
+  "browser": "./retrieval-browser.js",
   "author": {
     "name": "TehShrike",
     "email": "me@JoshDuff.com",
@@ -17,18 +18,18 @@
   },
   "scripts": {
     "test": "npm run test:node && npm run test:browser",
-    "test:browser": "browserify ./test/test_*.js | tape-run --static=test/content",
-    "test:node": "node node_test.js"
+    "test:browser": "node test/browser_test.js",
+    "test:node": "node test/node_test.js"
   },
   "devDependencies": {
     "browserify": "^11.0.0",
-    "chrome-launch": "^1.1.3",
-    "self-signed-https": "^1.0.5",
     "send": "^0.12.2",
     "tape": "^4.1.0",
     "tape-run": "2.1.5"
   },
   "dependencies": {
+    "http-basic": "^3.0.0",
+    "simple-concat": "^1.0.0",
     "superagent": "^1.3.0",
     "text-metadata-parser": "^3.0.0"
   },

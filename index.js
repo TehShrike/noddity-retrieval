@@ -1,8 +1,11 @@
-var request = require('superagent')
 var url = require('url')
 var parser = require('text-metadata-parser')
 
-module.exports = function NoddityRetrieval(root) {
+module.exports = function NoddityRetrieval(opts) {
+	if (!opts || typeof opts !== 'object' || typeof opts.urlRoot !== 'string' || typeof opts.httpGet !== 'function') {
+		throw new Error('Expected an options object with properties `urlRoot` (string) and `httpGet` (function)')
+	}
+
 	function lookup(file, transform, cb) {
 		if (typeof file !== 'string') {
 			process.nextTick(function () {
@@ -10,9 +13,9 @@ module.exports = function NoddityRetrieval(root) {
 			})
 		} else {
 			var encodedFile = file.split('/').map(function (part) { return encodeURIComponent(part) }).join('/')
-			var fullUrl = url.resolve(root, encodedFile)
+			var fullUrl = url.resolve(opts.urlRoot, encodedFile)
 
-			request.get(fullUrl).end(function (err, res) {
+			opts.httpGet(fullUrl, function (err, res) {
 				if (err) {
 					cb(new Error("Lookup of " + fullUrl + " failed\n========\n" + err.message))
 				} else if (res.status !== 200) {
