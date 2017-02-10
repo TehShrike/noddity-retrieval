@@ -28,7 +28,7 @@
     "tape-run": "2.2.0"
   },
   "dependencies": {
-    "http-basic": "^3.0.0",
+    "http-basic": "^4.0.0",
     "simple-concat": "^1.0.0",
     "superagent": "^3.3.2",
     "text-metadata-parser": "^3.0.0"
