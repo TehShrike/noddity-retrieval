@@ -22,7 +22,7 @@
     "test:node": "node test/node_test.js"
   },
   "devDependencies": {
-    "browserify": "^11.0.0",
+    "browserify": "^14.0.0",
     "send": "^0.14.2",
     "tape": "^4.1.0",
     "tape-run": "2.2.0"
