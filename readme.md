@@ -3,6 +3,8 @@
 Noddity Retrieval
 =====
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/TehShrike/noddity-retrieval.svg)](https://greenkeeper.io/)
+
 This module provides an API to a [Noddity](http://noddity.com) data store full of posts and a list of said posts.
 
 You give it an http(s) root, and that's all it needs to provide
