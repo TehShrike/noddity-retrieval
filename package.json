@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "browserify": "^14.0.0",
-    "send": "^0.14.2",
+    "send": "^0.15.0",
     "tape": "^4.1.0",
     "tape-run": "2.3.0"
   },
