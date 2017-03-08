@@ -23,13 +23,13 @@
   },
   "devDependencies": {
     "browser-run": "~3.5.0",
-    "browserify": "^11.0.0",
+    "browserify": "^14.0.0",
     "send": "0.15.1",
     "tape": "^4.1.0",
     "tape-run": "2.1.5"
   },
   "dependencies": {
-    "http-basic": "~4.0.0",
+    "http-basic": "~4.0.1",
     "simple-concat": "~1.0.0",
     "superagent": "~3.5.0",
     "text-metadata-parser": "^3.0.0"
