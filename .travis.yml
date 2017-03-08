@@ -1,12 +1,17 @@
 language: node_js
 node_js:
-- '4.4'
-- '6.2'
+- '4'
+- '6'
+- '7'
 before_script:
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
 - sleep 3
 env:
-  global:
-  - secure: fiuNJrfuwuulz4XB+lF9XSwuhJdC0JL3Zr45L+rELTs1LX+OJUdnM1vl+fPFAgnyRQXA5PIPXAGpqfvD/S1UdjZvWGlBdn8Y7Ju08cUV3LxUDsiaUTOXrxz0ezQkXdFTiM/sYxwJ7apKVq2LZ8UOpAOOp+tDLSaQIfUwul3aKfU=
-  - secure: Ipy77wy/rA3icvAox3F+QvPj1bk43qaG8BMz2wwDivXk4vKlvQ1SiVhNcaXB1jFOI2BTf5iDP10JRzfSiIR8LjdLoUMql2Jv4VCRUaNCbfJIePSp06PrkGIObLDi/8wi+fgH34PZjsgHEKDNaiAK4UT6Vd0GAXccvrxKcCI2GGE=
+  - CXX=g++-4.8
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
