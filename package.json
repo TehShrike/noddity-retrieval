@@ -1,6 +1,6 @@
 {
   "name": "noddity-retrieval",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "main": "./retrieval-node.js",
   "browser": "./retrieval-browser.js",
   "author": {
