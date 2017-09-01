@@ -8,18 +8,22 @@ module.exports = function NoddityRetrieval(opts) {
 
 	function lookup(file, transform, cb) {
 		if (typeof file !== 'string') {
-			process.nextTick(function () {
+			process.nextTick(function() {
 				cb(new TypeError('Parameter \'file\' must be a string, not ' + typeof file))
 			})
 		} else {
-			var encodedFile = file.split('/').map(function (part) { return encodeURIComponent(part) }).join('/')
+			var encodedFile = file.split('/').map(function(part) {
+				return encodeURIComponent(part)
+			}).join('/')
 			var fullUrl = url.resolve(opts.urlRoot, encodedFile)
 
-			opts.httpGet(fullUrl, function (err, res) {
+			opts.httpGet(fullUrl, function(err, res) {
 				if (err) {
 					cb(new Error("Lookup of " + fullUrl + " failed\n========\n" + err.message))
 				} else if (res.status !== 200) {
 					cb(new Error("Lookup of " + fullUrl + " returned status " + res.status + "\n==========\n" + res.text))
+				} else if (typeof res.text !== 'string') {
+					cb(new Error("Lookup of " + fullUrl + " returned status " + res.status + " but non-string body text:\n" + res))
 				} else {
 					var result
 					try {
@@ -38,14 +42,14 @@ module.exports = function NoddityRetrieval(opts) {
 			lookup('index.json', JSON.parse, cb)
 		},
 		getPost: function(filename, cb) {
-			lookup(filename, function (textToParse) {
+			lookup(filename, function(textToParse) {
 				var post = parser(textToParse, {
 					date: 'date',
-					boolean: 'markdown'
+					boolean: 'markdown',
 				})
 				post.filename = filename
 				return post
 			}, cb)
-		}
+		},
 	}
 }
