@@ -31,7 +31,7 @@
   "dependencies": {
     "http-basic": "~4.0.1",
     "simple-concat": "~1.0.0",
-    "superagent": "~3.6.0",
+    "superagent": "~3.7.0",
     "text-metadata-parser": "^3.0.0"
   },
   "license": "WTFPL"
