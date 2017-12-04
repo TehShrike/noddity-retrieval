@@ -22,7 +22,7 @@
     "test:node": "node test/node_test.js"
   },
   "devDependencies": {
-    "browser-run": "~3.5.0",
+    "browser-run": "~4.1.0",
     "browserify": "^14.0.0",
     "send": "0.15.6",
     "tape": "^4.1.0",
